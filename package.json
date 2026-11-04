@@ -1,0 +1,52 @@
+{
+  "name": "barnowl-vda5050",
+  "homepage": "https://github.com/reelyactive/barnowl-vda5050/",
+  "author": {
+    "name": "reelyActive",
+    "email": "info@reelyactive.com"
+  },
+  "description": "Collect VDA5050 mobile robot position data from a MQTT broker.  We believe in an open Internet of Things.",
+  "keywords": [
+    "reelyActive",
+    "barnowl",
+    "MQTT",
+    "VDA5050",
+    "RTLS",
+    "raddec"
+  ],
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "type": "module",
+  "main": "./lib/barnowlvda5050.js",
+  "scripts": {
+    "start": "node bin/barnowl-vda5050",
+    "test": "node bin/barnowl-vda5050-test",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reelyactive/barnowl-vda5050.git"
+  },
+  "dependencies": {
+    "mqtt": "^5.16.1",
+    "raddec": ">=0.6.2"
+  },
+  "devDependencies": {
+    "eslint": "^10.10.0",
+    "@eslint/js": "^10.0.1",
+    "globals": "^17.12.0",
+    "@stylistic/eslint-plugin": "^5.10.0"
+  },
+  "bugs": {
+    "url": "https://github.com/reelyactive/barnowl-vda5050/issues"
+  },
+  "contributors": [
+    {
+      "name": "Jeffrey Dungen"
+    }
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+import BarnowlVda5050, { MqttListener } from '../lib/barnowlvda5050.js';
+
+const hostname = process.argv[2] || 'localhost';
+const port = process.argv[3] || 1883;
+const url = 'mqtt://' + hostname + ':' + port;
+
+const barnowlVda5050 = new BarnowlVda5050();
+
+barnowlVda5050.addListener(MqttListener, { url: url });
+barnowlVda5050.on('raddec', (raddec) => {
+  console.log(raddec.toFlattened());
+});
+barnowlVda5050.on('infrastructureMessage', (infrastructureMessage) => {
+  console.log(infrastructureMessage);
+});
+
+console.log(`barnowl-vda5050 instantiation test with broker at ${url}`);

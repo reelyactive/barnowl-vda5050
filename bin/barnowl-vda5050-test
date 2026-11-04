@@ -1,0 +1,56 @@
+#!/usr/bin/env node
+
+import mqtt from 'mqtt';
+import BarnowlVda5050, { MqttListener } from '../lib/barnowlvda5050.js';
+
+const TOPIC = 'vda5050/v3/reelyactive/0001/state';
+
+const hostname = process.argv[2] || 'localhost';
+const port = process.argv[3] || 1883;
+const url = 'mqtt://' + hostname + ':' + port;
+
+let headerId = 1;
+let x = 0;
+let y = 0;
+let theta = 0;
+
+const client = mqtt.connect(url);
+const barnowlVda5050 = new BarnowlVda5050();
+
+barnowlVda5050.addListener(MqttListener, { client: client });
+barnowlVda5050.on('raddec', (raddec) => {
+  console.log(raddec.toFlattened());
+});
+barnowlVda5050.on('infrastructureMessage', (infrastructureMessage) => {
+  console.log(infrastructureMessage);
+});
+
+
+setInterval(publishData, 1000);
+
+function publishData() {
+  if(client.connected) {
+    x += (Math.random() - 0.5);
+    y += (Math.random() - 0.5);
+    theta = (Math.random() - 0.5) * 2 * Math.PI;
+
+    const data = {
+      headerId: headerId++,
+      timestamp: new Date().toISOString(),
+      version: "3.0.0",
+      manufacturer: "reelyActive",
+      serialNumber: "1234",
+      mobileRobotPosition: {
+        x: x,
+        y: y,
+        theta: theta
+      }
+    };
+
+    const message = JSON.stringify(data);
+    console.log(`Publishing message to ${TOPIC}`);
+    client.publish(TOPIC, message);
+  }
+}
+
+console.log(`barnowl-vda5050 instantiation test with broker at ${url}`);
