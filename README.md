@@ -21,7 +21,7 @@ for __barnowl-vda5050__ to attempt to connect to a local __MQTT__ broker (mqtt:/
 
 for __barnowl-vda5050__ to attempt to connect to a __MQTT__ broker at the given IP address and port.
 
-In either case, __barnowl-vda5050__ will subscribe to the `vda5050/v3/#` topic, and (flattened) __raddec__ JSON will be printed to the console.
+In either case, __barnowl-vda5050__ will subscribe to the `vda5050/#` topic, and (flattened) __raddec__ JSON will be printed to the console.
 
 
 Hello barnowl-vda5050!
@@ -54,12 +54,53 @@ The following listener interfaces are supported by __barnowl-vda5050__.
 Connect to a MQTT server and subscribe to one or more topics to receive messages:
 
 ```javascript
-let options = { url: "mqtt://localhost", topics: [ "vda5050/v3/#" ],
+let options = { url: "mqtt://localhost", topics: [ "vda5050/#" ],
                 clientOptions: { username: "user", password: "pass" } };
 barnowl.addListener(BarnowlMqtt, {}, MqttListener, options);
 ```
 
 The `clientOptions` are defined in the [MQTT.js Client constructor documentation](https://github.com/mqttjs/MQTT.js#client).
+
+
+Supported VDA5050 Messages
+--------------------------
+
+__barnowl-vda5050__ supports messages which include position data, within the following version-specific properties:
+- (VDA5050 v3.x.x) `mobileRobotPosition`
+- (VDA5050 v2.x.x) `agvPosition`
+
+For example, the following v3.x.x message:
+
+    {
+      headerId: 1,
+      timestamp: "2026-11-11T11:11:11.111111Z",
+      version: "3.0.0",
+      serialNumber: "0001",
+      mobileRobotPosition: { x: 12.34, y: 56.78, ... },
+      ...
+    }
+
+and the following v2.x.x. message:
+
+    {
+      headerId: 1,
+      timestamp: "2026-11-11T11:11:11.111111Z",
+      version: "2.0.0",
+      serialNumber: "0001",
+      agvPosition: { x: 12.34, y: 56.78, ... },
+      ...
+    }
+
+would both yield the following [raddec](https://github.com/reelyactive/raddec):
+
+    {
+      transmitterId: "0001",
+      transmitterIdType: 0,
+      position: [ 12.34, 56.78 ],
+      timestamp: 1794395471111
+    }
+
+See [www.vda.de/en/search#"5050"](https://www.vda.de/en/search#"5050") for the VDA5050 specifications.
 
 
 reelyOpinionated
