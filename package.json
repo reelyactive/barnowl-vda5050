@@ -22,7 +22,8 @@
   "main": "./lib/barnowlvda5050.js",
   "scripts": {
     "start": "node bin/barnowl-vda5050",
-    "test": "node bin/barnowl-vda5050-test",
+    "test-v2": "node bin/barnowl-vda5050-test-v2",
+    "test-v3": "node bin/barnowl-vda5050-test-v3",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
